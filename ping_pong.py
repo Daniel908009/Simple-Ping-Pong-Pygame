@@ -7,7 +7,7 @@ pygame.init()
 # Set up the screen
 screen = pygame.display.set_mode([1000, 800], pygame.RESIZABLE)
 pygame.display.set_caption("Ping Pong")
-icon = pygame.image.load("ball.png")
+icon = pygame.image.load("ball_Uk1_icon.ico")
 pygame.display.set_icon(icon)
 
 
