@@ -14,27 +14,46 @@ pygame.display.set_icon(icon)
 running = True
 
 
-# Function to check collisions of the ball with the players
+# Function to check collisions of the ball with the players, extremely bad looking code, but it works
 def checkcollision():
+    global ballx, bally, ballxspeed, ballyspeed, playerx, playery
     for i in range(2):
-        if ballx <= playerx[i] + playerwith and ballx + ballwidth >= playerx[i] and bally <= playery[i] + playerheight and bally + ballheight >= playery[i]:
-            return True
+        if ballx + ballwidth >= playerx[i] and ballx <= playerx[i] + playerwith and bally + ballheight >= playery[i] and bally <= playery[i] + playerheight:
+            return True 
     return False
+
+def pause():
+    paused = True
+    while paused:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    paused = False
+        text = pygame.font.Font(None, 74)
+        text = text.render("Paused", True, (255, 255, 255))
+        screen.blit(text, (screen.get_width() / 2 - text.get_width() / 2, screen.get_height() / 2 - text.get_height() / 2))
+        pygame.display.update()
 
 # Function to reset the game
 def reset():
-    global ballx, bally, ballyspeed, ballxspeed, playerx
+    global ballx, bally, ballyspeed, ballxspeed, playerx, collisions
     ballx = screen.get_width() / 2 - ballwidth / 2
     bally = screen.get_height() / 2 - ballheight / 2
     ballyspeed = random.choice([-1, 1, 2, -2])
     ballxspeed = random.choice([-1, 1, 2, -2])
     playerx = [0, screen.get_width() - playerwith]
+    collisions = 0
     for i in range(2):
         playery[i] = screen.get_height() / 2 - playerheight / 2
 
+def display_score():
+    score = pygame.font.Font(None, 74)
+    score = score.render(str(collisions), True, (255, 255, 255))
+    screen.blit(score, (screen.get_width() / 2 - score.get_width() / 2, 0))
+
 # Function to create players and ball
 def create_player():
-    player = pygame.image.load("player.png")
+    player = pygame.image.load("Newplayer.png")
     return player
 
 def create_ball():
@@ -78,6 +97,8 @@ while running:
         elif event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
                 reset()
+            elif event.key == pygame.K_p:
+                pause()
             # Move the players
             elif event.key == pygame.K_UP:
                 changeinspeed[0] = -5
@@ -107,13 +128,16 @@ while running:
     if checkcollision():
         ballxspeed *= -1
         collisions += 1
-        if collisions % 5 == 0:
-            ballxspeed *= 1.5
-            ballyspeed *= 1.5
-            
+        if collisions % 10 == 0:
+            ballxspeed *= 1.2
+            ballyspeed *= 1.2
+
+    # Displaying the score
+    display_score()
 
     # Check for win
     if ballx <= 0 or ballx >= screen.get_width() - ballwidth:
+        collisions = 0
         ballyspeed = 0
         ballxspeed = 0
         text = pygame.font.Font(None, 74)
@@ -139,7 +163,7 @@ while running:
         elif playery[i] >= screen.get_height() - playerheight:
             playery[i] = screen.get_height() - playerheight
 
-  
+
 
     # Draw the players
     for i in range(2):
@@ -147,11 +171,6 @@ while running:
 
     # Draw the ball
     screen.blit(ball, (ballx, bally))
-
-    # Update the screen
-    pygame.display.update()
-
-pygame.quit()
 
     # Update the screen
     pygame.display.update()
