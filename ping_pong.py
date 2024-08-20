@@ -1,14 +1,20 @@
 import pygame 
 import random
+import os 
+import sys
 
 # Initialize the game
 pygame.init()
-
+if hasattr(sys, '_MEIPASS'):
+    base_path = sys._MEIPASS
+else:
+    base_path = os.path.abspath(".")
 # Set up the screen
 screen = pygame.display.set_mode([1000, 800], pygame.RESIZABLE)
-pygame.display.set_caption("Ping Pong")
-icon = pygame.image.load("ball_Uk1_icon.ico")
+pygame.display.set_caption(os.path.join(base_path, "Ping Pong"))
+icon = pygame.image.load(os.path.join(base_path, "ball.png"))
 pygame.display.set_icon(icon)
+pygame.display.set_caption("Ping Pong")
 
 
 running = True
@@ -53,11 +59,11 @@ def display_score():
 
 # Function to create players and ball
 def create_player():
-    player = pygame.image.load("Newplayer.png")
+    player = pygame.image.load(os.path.join(base_path, "NewPlayer.png"))
     return player
 
 def create_ball():
-    ball = pygame.image.load("ball.png")
+    ball = pygame.image.load(os.path.join(base_path, "ball.png"))
     return ball
     
 
