@@ -1,4 +1,4 @@
-# Simple-Ping-Pong-Pygame-1-player
+# Simple-Ping-Pong-Pygame-2-players
 My first pygame! Anyone who checks out this code, please be gentle I am just a first year midleschool student. <br>
 <h1>Description</h1>
 classic Ping pong game programmed in Python with Pygame library<br>
